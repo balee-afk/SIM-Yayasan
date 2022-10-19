@@ -51,16 +51,20 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        Employee::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'job' => $request->job,
-        'NPP' => $request->NPP,
-        'status' => $request->status,
-        'password' => Hash::make($request->password)
-        ]);
-
-        return redirect('employee');
+        try {
+            Employee::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'job' => $request->job,
+            'NPP' => $request->NPP,
+            'status' => $request->status,
+            'password' => Hash::make($request->password)
+            ]);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return "Something went wrong";
+        }
+        return redirect('employee');`
     }
 
 }
